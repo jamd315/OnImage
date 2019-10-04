@@ -10,7 +10,7 @@ import numpy as np
 import pyautogui
 from PIL import Image, ImageDraw, ImageFont
 
-from HashingArray import HashingArray
+from on_image.HashingArray import HashingArray
 
 
 # BGR colors used for debugging in img_find
@@ -212,11 +212,12 @@ def _map_img_find(packed_args):
     return img_find(*args, **kwargs)
 
 
-def multi_img_find(*targets, use_mp=None, mp_cutoff=20, core_count=None, **kwargs) -> list:
+def multi_img_find(*targets, use_mp=None, mp_cutoff=20, core_count=None, **kwargs) -> tuple:
     """
     Takes images and returns a list containing either the results of `img_find` or `None` if the image wasn't found.
     Keyword arguments will be passed to `img_find`, with the exception of the `target`, `source_screenshot`, and `timeout` keywords
 
+    :param targets: Images to find
     :param use_mp: Whether to use multiprocessing or not.  Can be slower when enabled, but if there are lots of images this can be a speedup.  Default is to use multiprocessing when there are more than `mp_cutoff`.
     :type: bool
     :param mp_cutoff: Cutoff for when to use multiprocessing when `use_mp` is set to automatic.  Default is 20 based on local testing, see also the benchmark_multi_img_find_multiprocessing.py script
@@ -241,10 +242,10 @@ def multi_img_find(*targets, use_mp=None, mp_cutoff=20, core_count=None, **kwarg
     if use_mp:
         n_cpu = core_count or int(multiprocessing.cpu_count() / 2)
         with multiprocessing.Pool(n_cpu) as p:
-            out = list(p.map(_map_img_find, work))
+            out = tuple(p.map(_map_img_find, work))
         return out
     else:
-        return list(map(_map_img_find, work))
+        return tuple(map(_map_img_find, work))
 
 
 def resolve_image(image) -> HashingArray:

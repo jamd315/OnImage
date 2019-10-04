@@ -3,7 +3,7 @@ import time
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-from OnImage import _make_sample_image, multi_img_find
+from on_image import _make_sample_image, multi_img_find
 
 if __name__ == "__main__":
     graph_work = [*range(1, 10), *range(10, 50, 2), *range(50, 105, 5)]

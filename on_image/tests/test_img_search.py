@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from PIL import Image, ImageDraw
 
-from OnImage import img_find
+from on_image import img_find
 
 
 class TestImg_find(TestCase):
