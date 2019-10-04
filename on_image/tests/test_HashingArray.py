@@ -3,6 +3,7 @@ from unittest import TestCase
 import numpy as np
 from on_image.HashingArray import HashingArray
 
+
 class TestHashingArray(TestCase):
     def setUp(self) -> None:
         self.sample_np_array = np.zeros((100, 100))

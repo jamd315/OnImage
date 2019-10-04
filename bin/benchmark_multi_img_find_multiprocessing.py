@@ -1,3 +1,4 @@
+import os
 import time
 
 import matplotlib.pyplot as plt
@@ -13,7 +14,7 @@ if __name__ == "__main__":
 
     time_data = []
     for n in tqdm(graph_work, desc="No Pool"):
-        work = [f"./images/{i}.png" for i in range(n)]
+        work = [f"{i}.png" for i in range(n)]
 
         t1 = time.time()
         multi_img_find(work, use_mp=False)
@@ -23,7 +24,7 @@ if __name__ == "__main__":
 
     time_data = []
     for n in tqdm(graph_work, desc="Auto select"):
-        work = [f"./images/{i}.png" for i in range(n)]
+        work = [f"{i}.png" for i in range(n)]
 
         t1 = time.time()
         multi_img_find(work)
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         time_data = []
 
         for n in tqdm(graph_work, desc=f"{cpu_cores} core{'' if cpu_cores == 1 else 's'}"):
-            work = [f"./images/{i}.png" for i in range(n)]
+            work = [f"{i}.png" for i in range(n)]
 
             t1 = time.time()
             multi_img_find(work, core_count=cpu_cores, use_mp=True)
@@ -49,3 +50,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig(f"benchmark.png")
     plt.show()
+
+    for i in range(max(graph_work)):
+        os.remove(f"{i}.png")
