@@ -142,6 +142,9 @@ def img_find(target=None, thresh=0.99, timeout=0, method=cv2.TM_SQDIFF_NORMED, d
     if debug and source_screenshot:
         raise ValueError("Can't use debug and source_screenshot at the same time")
 
+    if not 0 < thresh < 1:
+        raise ValueError("Expected thresh parameter to be between 0 and 1")
+
     start_time = time.time()  # For the timeout
     min_or_max = {
         cv2.TM_SQDIFF_NORMED: "min",
@@ -225,6 +228,10 @@ def multi_img_find(*targets, use_mp=None, mp_cutoff=20, core_count=None, **kwarg
     :param core_count: Override the number of cores to use
     :type: int
     """
+    if len(targets) == 0:
+        raise ValueError("Expected an image")
+    if core_count is not None and core_count < 1:
+        core_count = 1
     if isinstance(targets[0], Iterable) and not isinstance(targets[0], str):
         targets = targets[0]
     screenshot = pyautogui.screenshot()
@@ -265,11 +272,13 @@ def resolve_image(image) -> HashingArray:
 
 
 def _make_sample_image(n):
-    image_name = f"./images/{n}.png"
+    image_name = f"{n}.png"
     if os.path.exists(image_name):
         return
     img = Image.new("RGB", (200, 100), (255, 255, 255))
     img_draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("./Arial.ttf", 100)
+    file_dir = os.path.split(__file__)[0]
+    arial = os.path.join(file_dir, "Arial.ttf")
+    font = ImageFont.truetype(arial, 100)
     img_draw.text((0, 0), str(n), (0, 0, 0), font)
     img.save(image_name)

@@ -24,8 +24,11 @@ class TestImg_find(TestCase):
         )
         mock_screenshot = Image.new("RGB", mock_screenshot_size, (255, 255, 255))
         mock_screenshot.paste(target_img, position)
-        mock_screenshot.show()
         self.assertEqual(
             (position[0], position[1], position[0] + target_size[0], position[1] + target_size[1]),
             img_find(target=target_img, source_screenshot=mock_screenshot)
         )
+
+    def test_thresh_error(self):
+        with self.assertRaises(ValueError):
+            img_find(thresh=2)

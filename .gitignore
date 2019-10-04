@@ -195,6 +195,5 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python,pycharm
-/on_image/arial.ttf
 /.idea
 /bin/benchmark.png
